@@ -43,7 +43,7 @@ router.post("/signup", async (req, res) => {
 
 router.post("/login", async (req, res) => {
     const { email, password } = req.body
-    
+
     let user = await Signup.find({ "email": email })
     console.log(user);
 
@@ -52,36 +52,61 @@ router.post("/login", async (req, res) => {
     }
     else if (user[0].password != password) {
         res.status(400).json({
-            "msg":"wrong pass"
+            "msg": "wrong pass"
         })
     }
 
-    else{
+    else {
         res.json({
-            "msg":"Login Successful"
+            "msg": "Login Successful"
         })
     }
 })
 
 // Profile
 
-router.get("/profile/:email",async (req,res) => {
+router.get("/profile/:email", async (req, res) => {
     try {
-        const {email} = req.params
-        const userdata = await Signup.findOne({"email":email})
+        const { email } = req.params
+        const userdata = await Signup.findOne({ "email": email })
         console.log(userdata);
-   
-        if(userdata.length == 0 ){
+
+        if (userdata.length == 0) {
             return res.status(404).json({
-                "msg":"User not found"
+                "msg": "User not found"
             })
-        }      
-             res.status(200).json({
+        }
+        res.status(200).json({
             userdata
         })
 
     } catch (error) {
-        res.status(500).json({"msg":"Server error"})
+        res.status(500).json({ "msg": "Server error" })
     }
 })
+
+// Profile Edit
+
+router.put("/editprofile/:email", async (req, res) => {
+
+    try {
+        const { email } = req.params
+        const { name, password,image } = req.body
+
+        const updatedUser = await Signup.findOneAndUpdate(
+            {"email":email}, //Find profile by email
+            {"name":name, "password":password,"image":image}, //Update name,image  and password
+            {new:true} //Return the updated  name,image and password
+        )
+
+        if(!updatedUser){
+            return res.status(404).json({"msg":"User not found"})
+        }
+        res.status(200).json({"msg":"Profile Updated Successfully",updatedUser})
+        
+    } catch (error) {
+       res.status(500).json({ "msg": "Server error" });
+    }
+})
+
 module.exports = router

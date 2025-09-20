@@ -24,7 +24,7 @@ export default function Login() {
       
       localStorage.setItem("email",formData.email)
       // Optionally redirect after successful signup
-      navigate("/login");
+      navigate("/");
     } catch (error) {
       seterrormsg(error.response.data.msg)
      

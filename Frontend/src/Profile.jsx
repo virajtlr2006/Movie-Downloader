@@ -49,6 +49,7 @@ const Profile = () => {
             )}
 
             <button onClick={logout}>Log Out</button>
+            <button>Edit Profile</button>
         </div>
     )
 }

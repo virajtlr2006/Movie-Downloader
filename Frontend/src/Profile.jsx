@@ -6,6 +6,9 @@ import { useNavigate } from 'react-router-dom'
 
 const Profile = () => {
     const [Profile, setProfile] = useState({})
+    const [isEditing, setIsEditing] = useState(false);
+    const [editedProfile, setEditedProfile] = useState({});
+
     const email = localStorage.getItem("email")
 
     // LogOut
@@ -38,20 +41,6 @@ const Profile = () => {
             navigate("/login")
         }
     }, [email, navigate])
-
-    return (
-        <div>
-            {Profile.userdata && (
-                <>
-                    <p>{Profile.userdata.email}</p>
-                    <p>{Profile.userdata.name}</p>
-                </>
-            )}
-
-            <button onClick={logout}>Log Out</button>
-            <button>Edit Profile</button>
-        </div>
-    )
 }
 
 export default Profile

@@ -5,7 +5,8 @@ const signupSchema = new mongoose.Schema({
     "email":{type:String , require:true},
     "name" :{type:String},
     "image":{type:String},
-    "password":{type:String , reqruire:true}
+    "password":{type:String , reqruire:true},
+    "movies": [{ type: mongoose.Schema.Types.ObjectId, ref: "Movie" }]
 })
 
 //Export the SignUp model

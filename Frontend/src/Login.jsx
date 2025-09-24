@@ -19,10 +19,10 @@ export default function Login() {
 
   const handleFormSubmit = async (formData) => {
     try {
-      const response = await axios.post("http://localhost:8080/api/login", formData);
+      const response = await axios.post("http://localhost:8080/api/signinnew", formData);
       console.log(response);
       
-      localStorage.setItem("email",formData.email)
+      localStorage.setItem("token",response.data.a)
       // Optionally redirect after successful signup
       navigate("/");
     } catch (error) {

@@ -2,6 +2,7 @@ const express = require("express")
 const dbConnect = require("./Config/dbConnect.js")
 const cors = require("cors")
 const signup = require("./Routes/signup.js")
+const movie = require("./Routes/movie.js")
 const app = express()
 
 //Middleware
@@ -22,3 +23,4 @@ app.get("/",async (req,res) => {
 })
 
 app.use("/api",signup)
+app.use("/movie",movie)

@@ -1,6 +1,7 @@
 const express = require("express")
-const Signup = require("../Model/signup.js")
-
+const Signup = require("../Model/Signup.js")
+const jwt = require("jsonwebtoken")
+const verifyToken = require("./verifyToken.js")
 
 const router = express.Router()
 
@@ -65,9 +66,11 @@ router.post("/login", async (req, res) => {
 
 // Profile
 
-router.get("/profile/:email", async (req, res) => {
+router.post("/profile", async (req, res) => {
     try {
-        const { email } = req.params
+        const { token } = req.body
+        const email= verifyToken(token).email
+        console.log(email);
         const userdata = await Signup.findOne({ "email": email })
         console.log(userdata);
 
@@ -107,6 +110,22 @@ router.put("/editprofile/:email", async (req, res) => {
     } catch (error) {
        res.status(500).json({ "msg": "Server error" });
     }
+})
+
+router.post("/signinnew",async (req,res) => {
+    const { email, password } = req.body
+    console.log(email);
+    
+   const a = jwt.sign({email},"b",{expiresIn:"1d"})
+   console.log(a);
+   res.json({a})
+})
+router.post("/abcd",async (req,res) => {
+    const {token} = req.body
+    const email= verifyToken(token).email
+    console.log(email);
+    res.json({email})
+    
 })
 
 module.exports = router

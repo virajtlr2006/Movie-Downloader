@@ -6,7 +6,7 @@ const movieSchema = new mongoose.Schema({
     "description" : {type:String , required:true}, //Movie description
     "poster" : {type:String , required:true}, //URL of the movie poster
     "genre" : {type:String , required:true}, //Movie genre(Category of a movie)
-    "downloadlink" : {type:String , required:true}, //Movie download link
+    "downloadlink" : {type:String }, //Movie download link
     "trailerlink" : {type:String , required:true}, //Movie trailer link
     "year" : {type:Number , required:true}, //Release year of a movie
     "duration" : {type:Number , required:true}, //Movie duration

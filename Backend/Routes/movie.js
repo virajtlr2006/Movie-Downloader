@@ -2,6 +2,7 @@ const express = require("express")
 const Movie = require("../Model/Movie")
 const signup = require("../Model/Signup");
 const router = express.Router()
+const jwt = require("jsonwebtoken")
 
 // Get all the movies
 
@@ -19,7 +20,8 @@ router.get("/", async (req, res) => {
 // Add a new movie
 
 router.post("/new", async (req, res) => {
-    const { email, title, description, poster, genre, downloadlink, trailerlink, year, duration, rating } = req.body
+    const { token, title, description, poster, genre, downloadlink, trailerlink, year, duration, rating } = req.body
+    const email = jwt.verify(token,"b").email
 
     console.log(downloadlink, trailerlink);
 
@@ -83,7 +85,9 @@ router.get("/:id",async (req,res) => {
 // get User's all movies
 
 router.post("/userallmovie",async (req,res) => {
-    const {email} = req.body
+    const {token} = req.body
+    const email = jwt.verify(token,"b").email
+    // console.log(email);
     if(!email){
         res.status(400).json({
             "msg":"Please enter email"

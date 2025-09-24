@@ -32,7 +32,7 @@ const Profile = () => {
                     const response = await axios.post("http://localhost:8080/api/profile", { token })
                     console.log(response);
 
-                    setProfile(response.data.userdata);
+                    setProfile(response.data.profile);
 
 
                 } catch (error) {

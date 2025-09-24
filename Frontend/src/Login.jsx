@@ -1,64 +1,35 @@
-import React from 'react';
-import { useForm } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
-import axios from "axios";
-import { useState } from 'react';
-
-export default function Login() {
-    const [errormsg, seterrormsg] = useState(null)
+import React from 'react'
+import { useForm } from "react-hook-form"
+import axios from 'axios'
 
 
-
-  const navigate = useNavigate();
+const Login = () => {
   const {
     register,
     handleSubmit,
+    watch,
     formState: { errors },
-    trigger
-  } = useForm();
+  } = useForm()
 
-  const handleFormSubmit = async (formData) => {
-    try {
-      const response = await axios.post("http://localhost:8080/api/signinnew", formData);
-      console.log(response);
-      
-      localStorage.setItem("token",response.data.a)
-      // Optionally redirect after successful signup
-      navigate("/");
-    } catch (error) {
-      seterrormsg(error.response.data.msg)
-     
-    }
-  };
-
+  const onsubmit = async (data) => {
+    console.log(data);
+    const api = await axios.post("http://localhost:8080/api/signinnew",data)
+    console.log(api.data.token);
+    localStorage.setItem("token",api.data.token)
+    
+    
+  }
   return (
     <div>
-      <form onSubmit={handleSubmit(handleFormSubmit)}>
-        {/* Email */}
-        <label htmlFor="email">Email</label>
-        <input
-          type="email"
-          id="email"
-          placeholder="Email ID"
-          {...register("email", { required: "Email is required" })}
-        />
-        {errors.email && <p>{errors.email.message}</p>}
-
-
-        {/* Password */}
-        <label htmlFor="password">Password</label>
-        <input
-          type="password"
-          id="password"
-          placeholder="Enter your password"
-          {...register("password", { required: "Password is required" })}
-        />
-        {errors.password && <p>{errors.password.message}</p>}
-
-        {/* Submit Button */}
-        {errormsg && <p>{errormsg}</p>}
-        <button type="submit">Log In</button>
-      </form>
+       <form onSubmit={handleSubmit(onsubmit)}>
+      
+      <input {...register("email", { required: true })} />
+      <input {...register("password", { required: true })} />
+  
+      <input type="submit" />
+    </form>
     </div>
-  );
+  )
 }
+
+export default Login

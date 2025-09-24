@@ -67,25 +67,13 @@ router.post("/login", async (req, res) => {
 // Profile
 
 router.post("/profile", async (req, res) => {
-    try {
-        const { token } = req.body
-        const email= verifyToken(token).email
-        console.log(email);
-        const userdata = await Signup.findOne({ "email": email })
-        console.log(userdata);
-
-        if (userdata.length == 0) {
-            return res.status(404).json({
-                "msg": "User not found"
-            })
-        }
-        res.status(200).json({
-            userdata
-        })
-
-    } catch (error) {
-        res.status(500).json({ "msg": "Server error" })
-    }
+  const {token} = req.body
+  console.log(token );
+  const email = jwt.verify(token,"b").email
+  console.log(email);
+  const profile = await Signup.findOne({email})
+//   console.log(profile);
+  res.status(200).json({profile})
 })
 
 // Profile Edit
@@ -113,19 +101,20 @@ router.put("/editprofile/:email", async (req, res) => {
 })
 
 router.post("/signinnew",async (req,res) => {
-    const { email, password } = req.body
-    console.log(email);
-    
-   const a = jwt.sign({email},"b",{expiresIn:"1d"})
-   console.log(a);
-   res.json({a})
-})
-router.post("/abcd",async (req,res) => {
-    const {token} = req.body
-    const email= verifyToken(token).email
-    console.log(email);
-    res.json({email})
-    
+    const {email,password} = req.body
+    // console.log(email,password);
+    const user = await Signup.findOne({email})
+    // console.log(user.password);
+    if(!user){
+        res.status(400).json({"msg":"User not found"})
+    }
+    if(password != user.password){
+        res.status(400).json({"msg":"Enter correct password"})
+    }
+    //Generate token
+    const token = jwt.sign({email},"b",{expiresIn:"1d"})
+    // console.log(token);
+    res.json({token})
 })
 
 module.exports = router
